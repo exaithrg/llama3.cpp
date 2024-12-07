@@ -142,7 +142,7 @@ def version1_export(model, filepath, group_size):
             print(
                 f"{i+1}/{len(weights)} quantized {tuple(w.shape)} to Q8_0 with max error {err}"
             )
-    if group_size >= 0:
+    if group_size > 0:
         assert 0 < len(ew)
         ew.sort(reverse=True)
         print(f"max quantization group error across all weights: {ew[0][0]}")
