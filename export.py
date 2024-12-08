@@ -269,7 +269,7 @@ def load_hf_model(model_path):
     config.dim = hf_model.config.hidden_size
     config.n_layers = hf_model.config.num_hidden_layers
     config.n_heads = hf_model.config.num_attention_heads
-    config.n_kv_heads = hf_model.config.num_attention_heads
+    config.n_kv_heads = hf_model.config.num_key_value_heads
     config.vocab_size = hf_model.config.vocab_size
     config.hidden_dim = hf_model.config.intermediate_size
     config.norm_eps = hf_model.config.rms_norm_eps
@@ -288,6 +288,8 @@ def load_hf_model(model_path):
             .transpose(1, 2)
             .reshape(dim1, dim2)
         )
+    
+    kv_mult = config.n_heads // config.n_kv_heads
 
     for layer in model.layers:
         i = layer.layer_id
@@ -298,7 +300,10 @@ def load_hf_model(model_path):
             permute_reverse(hf_dict[f"model.layers.{i}.self_attn.q_proj.weight"])
         )
         layer.attention.wk.weight = nn.Parameter(
-            permute_reverse(hf_dict[f"model.layers.{i}.self_attn.k_proj.weight"])
+            permute_reverse(hf_dict[f"model.layers.{i}.self_attn.k_proj.weight"], 
+                            n_heads=config.n_kv_heads,
+                            dim1 = config.dim//kv_mult,
+                            dim2 = config.dim)
         )
         layer.attention.wv.weight = nn.Parameter(
             hf_dict[f"model.layers.{i}.self_attn.v_proj.weight"]
