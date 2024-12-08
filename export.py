@@ -126,7 +126,7 @@ def version1_export(model, filepath, group_size):
         (model.norm.weight, False)
     ]
     if not shared_classifier:
-        weights.append(model.output.weight)
+        weights.append((model.output.weight, True))
     
     ew = []
     for i, (w, q) in enumerate(weights):
