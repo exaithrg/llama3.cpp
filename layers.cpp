@@ -160,11 +160,6 @@ CausalAttention::CausalAttention(size_t seqLength, size_t dim, size_t nHeads, si
       att(nHeads, Tensor(seqLength, true)),
       xb(dim, true)
 {
-    for (size_t i = 0; i < seqLength; ++i)
-    {
-        keyCache[i].f();
-        valueCache[i].f();
-    }
 }
 
 void CausalAttention::forward(Tensor &x, Tensor &out)
@@ -247,8 +242,8 @@ FFN::FFN(size_t dim, size_t hiddenDim)
       w1(dim, hiddenDim),
       w2(hiddenDim, dim),
       w3(dim, hiddenDim),
-      hb(hiddenDim),
-      hb2(hiddenDim)
+      hb(hiddenDim, true),
+      hb2(hiddenDim, true)
 {
 }
 
