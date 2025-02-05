@@ -5,3 +5,4 @@ mkdir -p ./llama3.cpp/build/
 cd ./llama3.cpp/build/
 cmake ..
 make
+cd ../..

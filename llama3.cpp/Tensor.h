@@ -12,7 +12,7 @@ template <typename T> struct LoggingAllocator : std::allocator<T>
 {
     T *allocate(std::size_t n)
     {
-        logger(Logger::DEBUG) << "Allocating " << n << " elements" << std::endl;
+        // logger(Logger::DEBUG) << "Allocating " << n << " elements" << std::endl;
         return std::allocator<T>::allocate(n);
     }
 };

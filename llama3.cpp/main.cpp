@@ -62,9 +62,7 @@ auto time_in_ms()
 
 // ----------------------------------------------------------------------------
 // generation loop
-
-void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt,
-              size_t numSteps)
+void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt, size_t numSteps)
 {
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
@@ -123,8 +121,7 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
 // python reference and that seemed ok, but this was not thoroughly tested and
 // is not safely implemented, it's more a proof of concept atm.
 
-void chat(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string system_prompt,
-          size_t numSteps)
+void chat(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string system_prompt, size_t numSteps)
 {
     if (system_prompt == "")
     {
@@ -221,7 +218,7 @@ struct MyArgs : public argparse::Args
     float &temperature = kwarg("t", "temperature in [0,inf], default 1.0").set_default(1.0f);
     float &topP = kwarg("p", "p value in top-p (nucleus) sampling in [0,1]").set_default(0.9f);
     int &rngSeed = kwarg("s", "random seed, default time(NULL)").set_default(static_cast<unsigned int>(time(NULL)));
-    int &steps = kwarg("n", "number of steps to run for, default 4096. 0 = infinite").set_default(4096);
+    int &steps = kwarg("n", "number of steps to run for, default 128. 0 = infinite").set_default(128);
     std::string &prompt = kwarg("i", "input prompt").set_default("");
     std::string &tokenizerPath = kwarg("z", "optional path to custom tokenizer").set_default("tokenizer.bin");
     std::string &mode = kwarg("m", "mode: generate|chat, default: generate").set_default("generate");
@@ -236,14 +233,17 @@ int main(int argc, char *argv[])
     if (args.debug)
         logger.setLevel(Logger::DEBUG);
 
+    logger(Logger::DEBUG) << "Building the Transformer via the model .bin file..." << std::endl;
+
     // build the Transformer via the model .bin file
     Transformer transformer = build_transformer(args.checkpoint_path);
     Tokenizer tokenizer(args.tokenizerPath, transformer.getConfig().vocabSize);
     NucleusSampler sampler(transformer.getConfig().vocabSize, args.temperature, args.topP, args.rngSeed);
-
     // run!
-    if (args.mode == "generate")
+    if (args.mode == "generate"){
+        logger(Logger::DEBUG) << "Model building ok, generation start..." << std::endl;
         generate(transformer, tokenizer, sampler, args.prompt, args.steps);
+    }
     else if (args.mode == "chat")
         chat(transformer, tokenizer, sampler, args.systemPrompt, args.steps);
     else
@@ -251,4 +251,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
 #endif
