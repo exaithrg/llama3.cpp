@@ -348,12 +348,8 @@ def model_export(model, filepath, version, quantize, dtype=torch.float32):
     else:
         raise ValueError(f"unknown version {version}")
 
-
-
-
 # -----------------------------------------------------------------------------
 # CLI entrypoint
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
