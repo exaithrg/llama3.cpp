@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Tensor.h"
-#include "layers.h"
+#include "Layers.h"
 
 struct Config
 {
@@ -23,7 +23,6 @@ struct Config
 class Transformer
 {
 public:
-    // 构造函数，但是实际用的是Transformer build_transformer(std::string const &checkpoint_path)
     Transformer(Config config);
 
     void loadWeights(std::ifstream &inputStream);

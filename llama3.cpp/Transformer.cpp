@@ -16,9 +16,9 @@ Transformer::Transformer(Config config)
       xb(config.dim),
       logits(config.vocabSize)
 {
-    logger(Logger::DEBUG) << std::endl;
+    // logger(Logger::DEBUG) << std::endl;
     logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::DEBUG) << "Transformer config:" << std::endl;
+    logger(Logger::DEBUG) << "Transformer model config:" << std::endl;
     logger(Logger::DEBUG) << "config.dim = " << config.dim << std::endl;
     logger(Logger::DEBUG) << "config.hiddenDim = " << config.hiddenDim << std::endl;
     logger(Logger::DEBUG) << "config.nLayers = " << config.nLayers << std::endl;
@@ -26,11 +26,14 @@ Transformer::Transformer(Config config)
     logger(Logger::DEBUG) << "config.nKVHeads = " << config.nKVHeads << std::endl;
     logger(Logger::DEBUG) << "config.vocabSize = " << config.vocabSize << std::endl;
     logger(Logger::DEBUG) << "config.seqLength = " << config.seqLength << std::endl;
-    logger(Logger::DEBUG) << "config.sharedClassifier = " << config.sharedClassifier << std::endl;
+    logger(Logger::DEBUG) << "(uint8_t) config.sharedClassifier = 0x" << std::hex
+        << static_cast<unsigned int>(config.sharedClassifier) 
+        << std::dec << std::endl;
     for (int i=0; i<3; ++i){
-        logger(Logger::DEBUG) << "config.padding[i] = " << config.padding[i] << std::endl;
+        logger(Logger::DEBUG) << "(uint8_t) config.padding[i] = 0x" << std::hex
+        << static_cast<unsigned int>(config.padding[i]) 
+        << std::dec << std::endl;
     }
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
 }
 
 void Transformer::loadWeights(std::ifstream &inputStream)

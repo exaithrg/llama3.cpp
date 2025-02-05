@@ -2,7 +2,7 @@
 #include <cmath>
 #include <numeric>
 
-#include "layers.h"
+#include "Layers.h"
 
 namespace detail
 {
