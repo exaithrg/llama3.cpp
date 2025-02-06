@@ -37,5 +37,8 @@ int main(int argc, char *argv[])
     else
         std::cerr << "unknown mode: " << args.mode << std::endl;
 
+    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::DEBUG) << "DONE" << std::endl;
+
     return 0;
 }

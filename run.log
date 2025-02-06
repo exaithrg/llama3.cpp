@@ -19,4 +19,7 @@ Model building ok, generation start...
 GENERATION LOOP
 --------------------------------------------------------
 I think Lava(?) is an accessible, open large language model (LLM) designed for text generation. I am trying to generate a few lines of code using a LLM, and I am wondering how to make the generated text a little more readable.
-achieved tok/s: 5.21327
+achieved tok/s: 3.39213
+--------------------------------------------------------
+DONE
+--------------------------------------------------------

@@ -62,8 +62,10 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
     logger(Logger::DEBUG) << "GENERATION LOOP" << std::endl;
     logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
+
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
+    // b Basic.cpp:67
     if (prompt_tokens.size() < 1)
         throw std::runtime_error("something is wrong, expected at least 1 prompt token");
 
@@ -74,10 +76,13 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     int token = prompt_tokens.pop();
     Tensor logits(transformer.getConfig().vocabSize);
 
+    // 0 means infinity
     while (0 == numSteps || steps < numSteps)
     {
         // forward the transformer to get logits for the next token
+        logger(Logger::DEBUG) << "Transformer::forward start with token=" << token << std::endl;
         transformer.forward(token, logits);
+        logger(Logger::DEBUG) << "Transformer::forward end" << std::endl;
 
         // advance the state machine
         if (!prompt_tokens.empty())

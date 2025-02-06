@@ -64,9 +64,11 @@ void Transformer::loadWeights(std::ifstream &inputStream)
 
 void Transformer::forward(int token, Tensor &logits)
 {
+
     // copy the token embedding into x
-    std::copy(tokenEmbeddingTable.data() + token * config.dim, tokenEmbeddingTable.data() + (1 + token) * config.dim,
-              x.f().data());
+    // tokenEmbeddingTable is a (vocab_size, dim) float tensor array
+    // std:copy: src start, src end, dest start. like minecraft:clone
+    std::copy(tokenEmbeddingTable.data() + token * config.dim, tokenEmbeddingTable.data() + (1 + token) * config.dim, x.f().data());
 
     std::reference_wrapper<Tensor> t1 = x;
     std::reference_wrapper<Tensor> t2 = xb;
@@ -83,6 +85,7 @@ void Transformer::forward(int token, Tensor &logits)
 
     // classifier into logits
     output.forward(xb, logits);
+
 }
 
 Config const &Transformer::getConfig() { return config; }
