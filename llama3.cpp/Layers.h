@@ -96,6 +96,8 @@ private:
     RMSNorm ffnNorm;
     FFN ffn;
 
+    // buffer 1
     Tensor xb;
+    // buffer 2. why so mamy buffer neededd?
     Tensor xb2;
 };

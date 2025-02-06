@@ -289,6 +289,9 @@ TransformerBlock::TransformerBlock(size_t seqLength, size_t dim, size_t nHeads, 
 
 void TransformerBlock::forward(Tensor &x, Tensor &out)
 {
+    // flow:
+    // RMSNorm + Atten + ResAdd + RMSNorm + FFN + ResAdd
+
     attentionNorm.forward(x, xb);
     attention.forward(xb, xb2);
 

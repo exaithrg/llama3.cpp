@@ -15,7 +15,6 @@ auto time_in_ms()
     return duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 }
 
-
 void check_header(std::ifstream &inputStream)
 {
     using namespace std::string_literals;
@@ -114,7 +113,8 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
         auto end = time_in_ms();
         auto elapsed = (end - *start).count();
         if (0 < elapsed)
-            logger(Logger::INFO) << "achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
+            logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
+            logger(Logger::DEBUG) << "achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
     }
 }
 
