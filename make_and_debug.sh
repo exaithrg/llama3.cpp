@@ -8,10 +8,10 @@ EXECUTABLE="./llama3.cpp/build/llama3"
 
 ARGS=(
     "./models/Llama3.2-1B.bin"
-    "-n" "56"
-    "-s" "6515"
+    "-n" "16"
+    "-s" "1234"
     "-z" "./tokenizer/tokenizer.bin"
-    "-i" "I think Lava(?) is an accessible, open large language model (LLM) designed for"
+    "-i" "Welcome to the most"
     "-d"
 )
 

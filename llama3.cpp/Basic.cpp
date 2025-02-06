@@ -59,9 +59,9 @@ Transformer build_transformer(std::string const &checkpoint_path)
 // generation loop
 void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt, size_t numSteps)
 {
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::DEBUG) << "GENERATION LOOP" << std::endl;
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "GENERATION LOOP" << std::endl;
+    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
 
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
@@ -80,9 +80,9 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     while (0 == numSteps || steps < numSteps)
     {
         // forward the transformer to get logits for the next token
-        logger(Logger::DEBUG) << "Transformer::forward start with token=" << token << std::endl;
+        logger(Logger::DEBUG) << "Transformer::forward " << steps << " start with token=" << token << std::endl;
         transformer.forward(token, logits);
-        logger(Logger::DEBUG) << "Transformer::forward end" << std::endl;
+        logger(Logger::DEBUG) << "Transformer::forward " << steps << " end" << std::endl;
 
         // advance the state machine
         if (!prompt_tokens.empty())
@@ -114,7 +114,7 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
         auto end = time_in_ms();
         auto elapsed = (end - *start).count();
         if (0 < elapsed)
-            std::cout << "achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
+            logger(Logger::INFO) << "achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
     }
 }
 

@@ -1,25 +1,11 @@
 --------------------------------------------------------
 Building the Transformer via the model .bin file...
 --------------------------------------------------------
-Transformer model config:
-config.dim = 2048
-config.hiddenDim = 8192
-config.nLayers = 16
-config.nHeads = 32
-config.nKVHeads = 8
-config.vocabSize = 128256
-config.seqLength = 2048
-(uint8_t) config.sharedClassifier = 0x1
-(uint8_t) config.padding[i] = 0x0
-(uint8_t) config.padding[i] = 0x0
-(uint8_t) config.padding[i] = 0x0
---------------------------------------------------------
 Model building ok, generation start...
 --------------------------------------------------------
 GENERATION LOOP
 --------------------------------------------------------
-I think Lava(?) is an accessible, open large language model (LLM) designed for text generation. I am trying to generate a few lines of code using a LLM, and I am wondering how to make the generated text a little more readable.
-achieved tok/s: 3.39213
+Welcome to the most complete list of Free Web Hosting Services. Here you will find
+achieved tok/s: 0.789723
 --------------------------------------------------------
 DONE
---------------------------------------------------------

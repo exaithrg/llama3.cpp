@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
     auto args = argparse::parse<MyArgs>(argc, argv);
 
     if (args.debug)
-        logger.setLevel(Logger::DEBUG);
+        logger.setLevel(Logger::INFO);
 
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::DEBUG) << "Building the Transformer via the model .bin file..." << std::endl;
+    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "Building the Transformer via the model .bin file..." << std::endl;
 
     // build the Transformer via the model .bin file
     Transformer transformer = build_transformer(args.checkpoint_path);
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     NucleusSampler sampler(transformer.getConfig().vocabSize, args.temperature, args.topP, args.rngSeed);
     // run!
     if (args.mode == "generate"){
-        logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-        logger(Logger::DEBUG) << "Model building ok, generation start..." << std::endl;
+        logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
+        logger(Logger::INFO) << "Model building ok, generation start..." << std::endl;
         generate(transformer, tokenizer, sampler, args.prompt, args.steps);
     }
     else if (args.mode == "chat")
@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     else
         std::cerr << "unknown mode: " << args.mode << std::endl;
 
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::DEBUG) << "DONE" << std::endl;
+    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "DONE" << std::endl;
 
     return 0;
 }

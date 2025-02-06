@@ -39,7 +39,9 @@ private:
     RMSNorm finalNorm;
     Linear output;
 
+    // x means input
     Tensor x;
+    // xb is the input buffer (or output buffer, anyway)
     Tensor xb;
     Tensor logits;
 };

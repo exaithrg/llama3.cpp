@@ -75,7 +75,9 @@ void Tensor::ensureFloat()
 {
     if (!isFloatValid_)
     {
-        logger(Logger::WARN) << "ensureFloat() occur" << std::endl;
+        // This should not be a WARN, but occur a lot of times when we
+        //     building the Transformer via the model .bin file
+        // logger(Logger::WARN) << "ensureFloat() occur" << std::endl;
         floatTensor.resize(size_);
         if (isQuantizedValid_)
             detail::dequantize(floatTensor, quantizedTensor);

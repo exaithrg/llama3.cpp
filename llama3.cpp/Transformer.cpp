@@ -16,6 +16,7 @@ Transformer::Transformer(Config config)
       xb(config.dim),
       logits(config.vocabSize)
 {
+    // You can directly use (gdb) p getConfig() to get the follwing config
     // logger(Logger::DEBUG) << std::endl;
     logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
     logger(Logger::DEBUG) << "Transformer model config:" << std::endl;
@@ -70,13 +71,16 @@ void Transformer::forward(int token, Tensor &logits)
     // std:copy: src start, src end, dest start. like minecraft:clone
     std::copy(tokenEmbeddingTable.data() + token * config.dim, tokenEmbeddingTable.data() + (1 + token) * config.dim, x.f().data());
 
+    // b Transformer.cpp:74
     std::reference_wrapper<Tensor> t1 = x;
     std::reference_wrapper<Tensor> t2 = xb;
 
     // forward all the layers
     for (int l = 0; l < config.nLayers; l++)
     {
+        logger(Logger::TRACE) << "layers[" << l << "].forward" << std::endl;
         layers[l].forward(t1, t2);
+        // works like a ping-pong buffer, let the last layer output as the curr layer input
         std::swap(t1, t2);
     }
 
