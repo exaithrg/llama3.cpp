@@ -58,15 +58,15 @@ Transformer build_transformer(std::string const &checkpoint_path)
 // generation loop
 void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt, size_t numSteps)
 {
-    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::INFO) << "GENERATION LOOP" << std::endl;
-    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "==INFO== GENERATION LOOP" << std::endl;
+    logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
 
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
     // b Basic.cpp:67
     if (prompt_tokens.size() < 1)
-        throw std::runtime_error("something is wrong, expected at least 1 prompt token");
+        throw std::runtime_error("==ERROR== something is wrong, expected at least 1 prompt token");
 
     // start the main loop
     std::optional<std::chrono::milliseconds> start; // used to time our code, only initialized after first iteration
@@ -79,9 +79,8 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     while (0 == numSteps || steps < numSteps)
     {
         // forward the transformer to get logits for the next token
-        logger(Logger::DEBUG) << "Transformer::forward " << steps << " start with token=" << token << std::endl;
+        logger(Logger::DEBUG) << "==DEBUG== Transformer::forward " << steps << " start with token=" << token << std::endl;
         transformer.forward(token, logits);
-        logger(Logger::DEBUG) << "Transformer::forward " << steps << " end" << std::endl;
 
         // advance the state machine
         if (!prompt_tokens.empty())
@@ -96,8 +95,11 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
             break;
 
         // print the token as string, decode it with the Tokenizer object
-        if (auto p = tokenizer.decode(token))
+        if (auto p = tokenizer.decode(token)){
+            logger(Logger::DEBUG) << "==DEBUG== Step " << steps << " with generated token: [";
             std::cout << *p << std::flush;
+            logger(Logger::DEBUG) << "]" << std::endl;
+        }
 
         // init the timer here because the first iteration can be slower
         if (!start.has_value())
@@ -112,9 +114,10 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     {
         auto end = time_in_ms();
         auto elapsed = (end - *start).count();
-        if (0 < elapsed)
-            logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-            logger(Logger::DEBUG) << "achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
+        if (0 < elapsed){
+            logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
+            logger(Logger::DEBUG) << "==DEBUG== achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
+        }
     }
 }
 

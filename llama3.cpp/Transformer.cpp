@@ -18,20 +18,20 @@ Transformer::Transformer(Config config)
 {
     // You can directly use (gdb) p getConfig() to get the follwing config
     // logger(Logger::DEBUG) << std::endl;
-    logger(Logger::DEBUG) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::DEBUG) << "Transformer model config:" << std::endl;
-    logger(Logger::DEBUG) << "config.dim = " << config.dim << std::endl;
-    logger(Logger::DEBUG) << "config.hiddenDim = " << config.hiddenDim << std::endl;
-    logger(Logger::DEBUG) << "config.nLayers = " << config.nLayers << std::endl;
-    logger(Logger::DEBUG) << "config.nHeads = " << config.nHeads << std::endl;
-    logger(Logger::DEBUG) << "config.nKVHeads = " << config.nKVHeads << std::endl;
-    logger(Logger::DEBUG) << "config.vocabSize = " << config.vocabSize << std::endl;
-    logger(Logger::DEBUG) << "config.seqLength = " << config.seqLength << std::endl;
-    logger(Logger::DEBUG) << "(uint8_t) config.sharedClassifier = 0x" << std::hex
+    logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== Transformer model config:" << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.dim = " << config.dim << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.hiddenDim = " << config.hiddenDim << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.nLayers = " << config.nLayers << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.nHeads = " << config.nHeads << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.nKVHeads = " << config.nKVHeads << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.vocabSize = " << config.vocabSize << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== config.seqLength = " << config.seqLength << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.sharedClassifier = 0x" << std::hex
         << static_cast<unsigned int>(config.sharedClassifier) 
         << std::dec << std::endl;
     for (int i=0; i<3; ++i){
-        logger(Logger::DEBUG) << "(uint8_t) config.padding[i] = 0x" << std::hex
+        logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.padding[i] = 0x" << std::hex
         << static_cast<unsigned int>(config.padding[i]) 
         << std::dec << std::endl;
     }
@@ -78,7 +78,7 @@ void Transformer::forward(int token, Tensor &logits)
     // forward all the layers
     for (int l = 0; l < config.nLayers; l++)
     {
-        logger(Logger::TRACE) << "layers[" << l << "].forward" << std::endl;
+        logger(Logger::TRACE) << "==TRACE== layers[" << l << "].forward" << std::endl;
         layers[l].forward(t1, t2);
         // works like a ping-pong buffer, let the last layer output as the curr layer input
         std::swap(t1, t2);

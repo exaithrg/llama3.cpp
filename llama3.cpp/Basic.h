@@ -3,7 +3,6 @@
 struct MyArgs : public argparse::Args
 {
     std::string &checkpoint_path = arg("checkpoint", "Model checkpoint");
-
     float &temperature = kwarg("t", "temperature in [0,inf], default 1.0").set_default(1.0f);
     float &topP = kwarg("p", "p value in top-p (nucleus) sampling in [0,1]").set_default(0.9f);
     int &rngSeed = kwarg("s", "random seed, default time(NULL)").set_default(static_cast<unsigned int>(time(NULL)));
@@ -13,6 +12,7 @@ struct MyArgs : public argparse::Args
     std::string &mode = kwarg("m", "mode: generate|chat, default: generate").set_default("generate");
     std::string &systemPrompt = kwarg("y", "(optional) system prompt in chat mode").set_default("");
     bool &debug = flag("d", "debug");
+    std::string &debuglevel = kwarg("l", "set debug info level with FATAL|ERROR|WARN|INFO|DEBUG|TRACE").set_default("WARN");
 };
 
 auto time_in_ms();

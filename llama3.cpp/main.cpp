@@ -16,11 +16,27 @@ int main(int argc, char *argv[])
 {
     auto args = argparse::parse<MyArgs>(argc, argv);
 
-    if (args.debug)
-        logger.setLevel(Logger::INFO);
+    if (args.debug){
+        std::map<std::string, Logger::Level> levelMap = {
+            {"FATAL", Logger::Level::FATAL},
+            {"ERROR", Logger::Level::ERROR},
+            {"WARN", Logger::Level::WARN},
+            {"INFO", Logger::Level::INFO},
+            {"DEBUG", Logger::Level::DEBUG},
+            {"TRACE", Logger::Level::TRACE}
+        };
+        auto it = levelMap.find(args.debuglevel);
+        if (it != levelMap.end())
+            logger.setLevel(it->second);
+        else {
+            logger(Logger::WARN) << "==WARN== Invalid debug level: " << args.debuglevel << ". Setting to WARN." << std::endl;
+            logger.setLevel(Logger::Level::WARN);
+        }
+    }
 
-    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::INFO) << "Building the Transformer via the model .bin file..." << std::endl;
+    logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "==INFO== Building the Transformer via model: " << args.checkpoint_path << " ..." << std::endl;
+    logger(Logger::INFO) << "==INFO== Building the Transformer via tokenizer: " << args.tokenizerPath << " ..." << std::endl;
 
     // build the Transformer via the model .bin file
     Transformer transformer = build_transformer(args.checkpoint_path);
@@ -28,17 +44,17 @@ int main(int argc, char *argv[])
     NucleusSampler sampler(transformer.getConfig().vocabSize, args.temperature, args.topP, args.rngSeed);
     // run!
     if (args.mode == "generate"){
-        logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
-        logger(Logger::INFO) << "Model building ok, generation start..." << std::endl;
+        logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
+        logger(Logger::INFO) << "==INFO== Model building ok, generation start..." << std::endl;
         generate(transformer, tokenizer, sampler, args.prompt, args.steps);
     }
     else if (args.mode == "chat")
         chat(transformer, tokenizer, sampler, args.systemPrompt, args.steps);
     else
-        std::cerr << "unknown mode: " << args.mode << std::endl;
+        std::cerr << "==ERROR== unknown mode: " << args.mode << std::endl;
 
-    logger(Logger::INFO) << "--------------------------------------------------------" << std::endl;
-    logger(Logger::INFO) << "DONE" << std::endl;
+    logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
+    logger(Logger::INFO) << "==INFO== DONE" << std::endl;
 
     return 0;
 }

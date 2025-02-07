@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# quit if make fail
+set -e
+
 cd ./llama3.cpp/build/
-make
+make || exit 1
 cd ../..
 
 EXECUTABLE="./llama3.cpp/build/llama3"
