@@ -7,7 +7,7 @@ cd ./llama3.cpp/build/
 make || exit 1
 cd ../..
 
-./llama3.cpp/build/llama3 ./models/Llama3.2-1B.bin -n 16 -s 1234 -z "./tokenizer/tokenizer.bin" -i "Welcome to the most" -d -l "DEBUG"
+./llama3.cpp/build/llama3 ./models/Llama3.2-1B.bin -n 32 -s 1234 -z "./tokenizer/tokenizer.bin" -i "Once upon a time, there" -d -l "WARN"
 
 # ./llama3 ./models/Llama3.1-8B-q80.bin -i "<HERE GOES THE PROMPT>"
 

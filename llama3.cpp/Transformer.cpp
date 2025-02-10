@@ -27,14 +27,14 @@ Transformer::Transformer(Config config)
     logger(Logger::DEBUG) << "==DEBUG== config.nKVHeads = " << config.nKVHeads << std::endl;
     logger(Logger::DEBUG) << "==DEBUG== config.vocabSize = " << config.vocabSize << std::endl;
     logger(Logger::DEBUG) << "==DEBUG== config.seqLength = " << config.seqLength << std::endl;
-    logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.sharedClassifier = 0x" << std::hex
-        << static_cast<unsigned int>(config.sharedClassifier) 
-        << std::dec << std::endl;
-    for (int i=0; i<3; ++i){
-        logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.padding[i] = 0x" << std::hex
-        << static_cast<unsigned int>(config.padding[i]) 
-        << std::dec << std::endl;
-    }
+    // logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.sharedClassifier = 0x" << std::hex
+    //     << static_cast<unsigned int>(config.sharedClassifier) 
+    //     << std::dec << std::endl;
+    // for (int i=0; i<3; ++i){
+    //     logger(Logger::DEBUG) << "==DEBUG== (uint8_t) config.padding[i] = 0x" << std::hex
+    //     << static_cast<unsigned int>(config.padding[i]) 
+    //     << std::dec << std::endl;
+    // }
 }
 
 void Transformer::loadWeights(std::ifstream &inputStream)

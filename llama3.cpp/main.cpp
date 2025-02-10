@@ -48,8 +48,6 @@ int main(int argc, char *argv[])
         logger(Logger::INFO) << "==INFO== Model building ok, generation start..." << std::endl;
         generate(transformer, tokenizer, sampler, args.prompt, args.steps);
     }
-    else if (args.mode == "chat")
-        chat(transformer, tokenizer, sampler, args.systemPrompt, args.steps);
     else
         std::cerr << "==ERROR== unknown mode: " << args.mode << std::endl;
 
