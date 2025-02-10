@@ -58,17 +58,20 @@ Transformer build_transformer(std::string const &checkpoint_path)
 // generation loop
 void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt, size_t numSteps)
 {
+    // encode the (string) prompt into tokens sequence
+    auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
+    // b Basic.cpp:68
+    if (prompt_tokens.size() < 1){
+        logger(Logger::ERROR) << "==ERROR== something is wrong, expected at least 1 prompt token" << std::endl;
+        throw std::runtime_error("==ERROR== something is wrong, expected at least 1 prompt token");
+    }
+    else
+        logger(Logger::DEBUG) << "==DEBUG== GENERATION start with " << prompt_tokens.size() << " tokens" << std::endl;
+
+    // start the main loop
     logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
     logger(Logger::INFO) << "==INFO== GENERATION LOOP" << std::endl;
     logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
-
-    // encode the (string) prompt into tokens sequence
-    auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
-    // b Basic.cpp:67
-    if (prompt_tokens.size() < 1)
-        throw std::runtime_error("==ERROR== something is wrong, expected at least 1 prompt token");
-
-    // start the main loop
     std::optional<std::chrono::milliseconds> start; // used to time our code, only initialized after first iteration
     size_t steps = 0;
 
@@ -119,5 +122,9 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
             logger(Logger::DEBUG) << "==DEBUG== achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
         }
     }
+
+    logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== GENERATION end with " << steps << " tokens" << std::endl;
+
 }
 

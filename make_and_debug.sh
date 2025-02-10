@@ -14,8 +14,9 @@ ARGS=(
     "-n" "16"
     "-s" "1234"
     "-z" "./tokenizer/tokenizer.bin"
-    "-i" "Welcome to the most"
+    "-i" "Once upon a time, there"
     "-d"
+    "-l" "DEBUG"
 )
 
 # gdb --args "$EXECUTABLE" "${ARGS[@]}" | tee -i debug.log

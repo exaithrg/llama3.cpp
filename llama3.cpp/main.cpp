@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     Transformer transformer = build_transformer(args.checkpoint_path);
     Tokenizer tokenizer(args.tokenizerPath, transformer.getConfig().vocabSize);
     NucleusSampler sampler(transformer.getConfig().vocabSize, args.temperature, args.topP, args.rngSeed);
+    
     // run!
     if (args.mode == "generate"){
         logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
         std::cerr << "==ERROR== unknown mode: " << args.mode << std::endl;
 
     logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
-    logger(Logger::INFO) << "==INFO== DONE" << std::endl;
+    logger(Logger::INFO) << "==INFO== GENERATION DONE " << std::endl;
 
     return 0;
 }
