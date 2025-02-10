@@ -20,5 +20,3 @@ void check_header(std::ifstream &inputStream);
 Transformer build_transformer(std::string const &checkpoint_path);
 
 void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string const &prompt, size_t numSteps);
-
-void chat(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sampler, std::string system_prompt, size_t numSteps);
