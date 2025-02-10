@@ -48,8 +48,7 @@ inline void matmulQuantized(FloatTensor &xout, QuantizedTensor const &x, Quantiz
     }
 }
 
-inline void applyRotaryEmbedding(FloatTensor &q, FloatTensor &k, size_t pos, size_t nHeads, size_t headSize,
-                                 size_t n_kv_heads)
+inline void applyRotaryEmbedding(FloatTensor &q, FloatTensor &k, size_t pos, size_t nHeads, size_t headSize, size_t n_kv_heads)
 {
     // RoPE relative positional encoding: complex-valued rotate q and k in
     // each head

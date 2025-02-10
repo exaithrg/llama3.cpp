@@ -60,7 +60,7 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
 {
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
-    // b Basic.cpp:68
+    // b Basic.cpp:64
     if (prompt_tokens.size() < 1){
         logger(Logger::ERROR) << "==ERROR== something is wrong, expected at least 1 prompt token" << std::endl;
         throw std::runtime_error("==ERROR== something is wrong, expected at least 1 prompt token");
