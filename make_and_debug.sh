@@ -12,7 +12,7 @@ EXECUTABLE="./llama3.cpp/build/llama3"
 ARGS=(
     "./models/Llama3.2-1B.bin"
     "-n" "16"
-    "-s" "1234"
+    "-s" "6515"
     "-z" "./tokenizer/tokenizer.bin"
     "-i" "Once upon a time, there"
     "-d"

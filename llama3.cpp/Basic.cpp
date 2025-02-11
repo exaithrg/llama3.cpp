@@ -75,6 +75,11 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     std::optional<std::chrono::milliseconds> start; // used to time our code, only initialized after first iteration
     size_t steps = 0;
 
+    // PREFILL STAGE
+    
+
+    // DECODE STAGE
+
     int token = prompt_tokens.pop();
     Tensor logits(transformer.getConfig().vocabSize);
 

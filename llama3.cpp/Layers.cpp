@@ -9,9 +9,11 @@ namespace detail
 
 inline void matmulFloat(FloatTensor &xout, FloatTensor const &x, FloatTensor const &w)
 {
+    // b Layers.cpp:13
     size_t i;
 #pragma omp parallel for private(i)
     for (i = 0; i < xout.size(); i++)
+        // vector-matrix multiplication
         xout[i] = std::inner_product(x.begin(), x.end(), w.begin() + i * x.size(), 0.0f);
 }
 
@@ -163,6 +165,10 @@ CausalAttention::CausalAttention(size_t seqLength, size_t dim, size_t nHeads, si
 
 void CausalAttention::forward(Tensor &x, Tensor &out)
 {
+    // b Layers.cpp:169
+    // keyCache是一个vector<Tensor>，具体来说是个vector<vector<>>
+    // 大小是2048*512，为什么是这个值呢？因为2048是d_model，然后512是最大的KV Cache大小，是写死的
+    // if pos > 512, remove the oldest value
     if (pos == keyCache.size())
     {
         std::shift_left(keyCache.begin(), keyCache.end(), 1);
