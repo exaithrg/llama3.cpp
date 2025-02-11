@@ -69,14 +69,26 @@ void Transformer::loadWeights(std::ifstream &inputStream)
 void Transformer::forward(TokenQueue tokens, Tensor &logits)
 {
 
-    assert(tokens.size() == 1);
+    // original version:
+    // assert(tokens.size() == 1);
+    // std::copy(tokenEmbeddingTable.data() + tokens.front() * config.dim, tokenEmbeddingTable.data() + (1 + tokens.front()) * config.dim, x.f().data());
 
-    // copy the token embedding into x
-    // tokenEmbeddingTable is a (vocab_size, dim) float tensor array
-    // std:copy: src start, src end, dest start. like minecraft:clone
-    std::copy(tokenEmbeddingTable.data() + tokens.front() * config.dim, tokenEmbeddingTable.data() + (1 + tokens.front()) * config.dim, x.f().data());
+    // prefill version:
+    // b Transformer.cpp:78
+    x = Tensor(tokens.size() * config.dim);
+    float* x_data = x.f().data();
+    int i=0;
+    for (int token : tokens) {
+        int start_idx = token * config.dim;
+        int end_idx = start_idx + config.dim;
+        std::copy(
+            tokenEmbeddingTable.data() + start_idx,
+            tokenEmbeddingTable.data() + end_idx,
+            x_data + i * config.dim
+        );
+        ++i;
+    }
 
-    // b Transformer.cpp:74
     std::reference_wrapper<Tensor> t1 = x;
     std::reference_wrapper<Tensor> t2 = xb;
 

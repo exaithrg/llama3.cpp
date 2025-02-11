@@ -26,7 +26,6 @@ class Tokenizer
 {
 public:
     Tokenizer(std::string path, int vocabSize);
-
     std::optional<std::string> decode(int token) const;
     TokenQueue encode(std::string text, bool bos, bool eos) const;
 
@@ -41,16 +40,13 @@ private:
     };
 
     std::optional<int> strLookUp(std::string str) const;
-
     void merge(TokenQueue &tokens) const;
 
 private:
     int vocabSize;
     FloatTensor vocabScores;
-
     unsigned char bytePieces[512];
     unsigned int maxTokenLength;
-
     std::vector<std::string> vocab;
     std::set<TokenIndex> sortedVocab;
 };
