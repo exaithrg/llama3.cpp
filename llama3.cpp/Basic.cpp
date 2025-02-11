@@ -60,6 +60,7 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
 {
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
+    
     // b Basic.cpp:64
     if (prompt_tokens.size() < 1){
         logger(Logger::ERROR) << "==ERROR== something is wrong, expected at least 1 prompt token" << std::endl;
@@ -81,9 +82,9 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     // transformer.forward(prompt_tokens, logits);
 
     // DECODE STAGE
-    int token = prompt_tokens.pop();
     Tensor logits(transformer.getConfig().vocabSize);
-
+    int token = prompt_tokens.pop();
+    
     // 0 means infinity
     while (0 == numSteps || steps < numSteps)
     {
