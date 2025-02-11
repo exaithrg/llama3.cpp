@@ -76,10 +76,11 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     size_t steps = 0;
 
     // PREFILL STAGE
-    
+    // logger(Logger::DEBUG) << "==DEBUG== PREFILL start with " << prompt_tokens.size() <<" tokens" << std::endl;
+    // Tensor logits(transformer.getConfig().vocabSize);
+    // transformer.forward(prompt_tokens, logits);
 
     // DECODE STAGE
-
     int token = prompt_tokens.pop();
     Tensor logits(transformer.getConfig().vocabSize);
 
