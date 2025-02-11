@@ -5,6 +5,7 @@
 #include "Tokenizer.h"
 
 // class TokenQueue : public std::list<int>
+TokenQueue::TokenQueue(int token) { this->push_back(token); }
 void TokenQueue::push(int token) { std::list<int>::push_back(token); }
 int TokenQueue::pop()
 {

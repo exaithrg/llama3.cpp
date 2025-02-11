@@ -3,9 +3,11 @@
 #include <cstdint>
 #include <fstream>
 #include <vector>
+// #include <list>
 
 #include "Tensor.h"
 #include "Layers.h"
+#include "Tokenizer.h"
 
 struct Config
 {
@@ -26,7 +28,8 @@ public:
     Transformer(Config config);
 
     void loadWeights(std::ifstream &inputStream);
-    void forward(int token, Tensor &logits);
+    // void forward(const std::list<int>& tokens, Tensor &logits);
+    void forward(TokenQueue tokens, Tensor &logits);
 
     Config const &getConfig();
 

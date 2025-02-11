@@ -1,8 +1,11 @@
 #include <algorithm>
 #include <cmath>
 #include <numeric>
+#include <cassert>
+// #include <list>
 
 #include "Transformer.h"
+#include "Tokenizer.h"
 #include "Logger.h"
 
 Transformer::Transformer(Config config)
@@ -63,13 +66,15 @@ void Transformer::loadWeights(std::ifstream &inputStream)
         output.loadWeights(inputStream);
 }
 
-void Transformer::forward(int token, Tensor &logits)
+void Transformer::forward(TokenQueue tokens, Tensor &logits)
 {
+
+    assert(tokens.size() == 1);
 
     // copy the token embedding into x
     // tokenEmbeddingTable is a (vocab_size, dim) float tensor array
     // std:copy: src start, src end, dest start. like minecraft:clone
-    std::copy(tokenEmbeddingTable.data() + token * config.dim, tokenEmbeddingTable.data() + (1 + token) * config.dim, x.f().data());
+    std::copy(tokenEmbeddingTable.data() + tokens.front() * config.dim, tokenEmbeddingTable.data() + (1 + tokens.front()) * config.dim, x.f().data());
 
     // b Transformer.cpp:74
     std::reference_wrapper<Tensor> t1 = x;

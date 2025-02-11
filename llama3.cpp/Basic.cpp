@@ -84,6 +84,7 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     // DECODE STAGE
     Tensor logits(transformer.getConfig().vocabSize);
     int token = prompt_tokens.pop();
+    TokenQueue tokens = {token};
     
     // 0 means infinity
     while (0 == numSteps || steps < numSteps)

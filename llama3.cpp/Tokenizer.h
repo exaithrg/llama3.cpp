@@ -14,6 +14,10 @@
 class TokenQueue : public std::list<int>
 {
 public:
+    // original constructor
+    using std::list<int>::list;
+    // a new constructor
+    TokenQueue(int token);
     void push(int token);
     int pop();
 };
