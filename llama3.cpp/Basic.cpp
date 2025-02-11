@@ -60,14 +60,15 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
 {
     // encode the (string) prompt into tokens sequence
     auto prompt_tokens = tokenizer.encode(prompt, 1, 0);
-    
-    // b Basic.cpp:64
+
     if (prompt_tokens.size() < 1){
         logger(Logger::ERROR) << "==ERROR== something is wrong, expected at least 1 prompt token" << std::endl;
         throw std::runtime_error("==ERROR== something is wrong, expected at least 1 prompt token");
+        return;
     }
-    else
-        logger(Logger::DEBUG) << "==DEBUG== GENERATION start with " << prompt_tokens.size() << " tokens" << std::endl;
+
+    logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
+    logger(Logger::DEBUG) << "==DEBUG== GENERATION start with " << prompt_tokens.size() << " tokens" << std::endl;
 
     // start the main loop
     logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
@@ -75,38 +76,51 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
     logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
     std::optional<std::chrono::milliseconds> start; // used to time our code, only initialized after first iteration
     size_t steps = 0;
+    int next_token;
+
+    // b Basic.cpp:82
+    logger(Logger::DEBUG) << "==DEBUG== INPUT TOKENS:" << std::endl;
+    for(auto it = prompt_tokens.begin(); it != prompt_tokens.end(); ++it){
+        auto p = tokenizer.decode(*it);
+        std::cout << *p << std::flush;
+    }
+    logger(Logger::DEBUG) << std::endl;
 
     // PREFILL STAGE
-    // logger(Logger::DEBUG) << "==DEBUG== PREFILL start with " << prompt_tokens.size() <<" tokens" << std::endl;
-    // Tensor logits(transformer.getConfig().vocabSize);
-    // transformer.forward(prompt_tokens, logits);
+    logger(Logger::DEBUG) << "==DEBUG== PREFILL STAGE start with " << prompt_tokens.size() <<" tokens" << std::endl;
+    Tensor logits(transformer.getConfig().vocabSize);
+    // b Basic.cpp:93
+    transformer.forward(prompt_tokens, logits);
+    next_token = sampler.sample(logits.f());
+    if (next_token == 128001 || next_token == 128009){
+        std::cout << std::endl;
+        logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
+        logger(Logger::DEBUG) << "==DEBUG== GENERATION end at PREFILL STAGE." << std::endl;
+        return;
+    }
+    if (auto p = tokenizer.decode(next_token)){
+        logger(Logger::DEBUG) << "==DEBUG== PREFILL STAGE end with generated token: [";
+        std::cout << *p << std::flush;
+        logger(Logger::DEBUG) << "]" << std::endl;
+    }
 
     // DECODE STAGE
-    Tensor logits(transformer.getConfig().vocabSize);
-    int token = prompt_tokens.pop();
-    TokenQueue tokens = {token};
-    
+    TokenQueue tokens = {next_token};
     // 0 means infinity
     while (0 == numSteps || steps < numSteps)
     {
         // forward the transformer to get logits for the next token
-        logger(Logger::DEBUG) << "==DEBUG== Transformer::forward " << steps << " start with token=" << token << std::endl;
-        transformer.forward(token, logits);
+        logger(Logger::DEBUG) << "==DEBUG== DECODE STAGE " << steps << " start with token=" << next_token << std::endl;
+        transformer.forward(tokens, logits);
 
-        // advance the state machine
-        if (!prompt_tokens.empty())
-            // if we are still processing the input prompt, force the next prompt token
-            token = prompt_tokens.pop();
-        else
-            // otherwise sample the next token from the logits
-            token = sampler.sample(logits.f());
+        next_token = sampler.sample(logits.f());
 
         // data-dependent terminating condition: the BOS (=1) token delimits sequences
-        if ((token == 128001 || token == 128009) && prompt_tokens.empty())
+        if (next_token == 128001 || next_token == 128009)
             break;
 
         // print the token as string, decode it with the Tokenizer object
-        if (auto p = tokenizer.decode(token)){
+        if (auto p = tokenizer.decode(next_token)){
             logger(Logger::DEBUG) << "==DEBUG== Step " << steps << " with generated token: [";
             std::cout << *p << std::flush;
             logger(Logger::DEBUG) << "]" << std::endl;
