@@ -1,4 +1,79 @@
+# README
+
+This is a modification of [llama3.cpp](https://github.com/jonemeth/llama3.cpp) by [jonemeth](https://github.com/jonemeth).
+
+## How to run:
+
+Make sure that `tokenizer.bin` is in folder `./tokenizer`/ and sth like `Llama3.2-1B.bin` is in folder `./models/`, then
+
+```bash
+bash rebuild_debug.sh
+bash make_and_run.sh
+```
+
+you will see sth like:
+
+```
+➜ sh rebuild_debug.sh:
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (9.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/geng/github/exaithrg/llama3.cpp/llama3.cpp/build
+[ 11%] Building CXX object CMakeFiles/llama3.dir/Logger.cpp.o
+[ 22%] Building CXX object CMakeFiles/llama3.dir/Sampler.cpp.o
+[ 33%] Building CXX object CMakeFiles/llama3.dir/Tensor.cpp.o
+[ 44%] Building CXX object CMakeFiles/llama3.dir/Tokenizer.cpp.o
+[ 55%] Building CXX object CMakeFiles/llama3.dir/Transformer.cpp.o
+[ 66%] Building CXX object CMakeFiles/llama3.dir/Layers.cpp.o
+[ 77%] Building CXX object CMakeFiles/llama3.dir/Basic.cpp.o
+[ 88%] Building CXX object CMakeFiles/llama3.dir/main.cpp.o
+[100%] Linking CXX executable llama3
+[100%] Built target llama3
+
+➜ sh make_and_run.sh
+[100%] Built target llama3
+==INFO== --------------------------------------------------------
+==INFO== Building the Transformer via model: ./models/Llama3.2-1B.bin ...
+==INFO== Building the Transformer via tokenizer: ./tokenizer/tokenizer.bin ...
+==INFO== --------------------------------------------------------
+==INFO== Model building ok, generation start...
+==INFO== --------------------------------------------------------
+==INFO== GENERATION LOOP
+==INFO== --------------------------------------------------------
+Once upon a time, there was a man who lived in a big city, and he was very busy with his work. He had to work very hard,
+==INFO== --------------------------------------------------------
+==INFO== GENERATION DONE
+```
+
+
+
+## What changes we made:
+
+1. [OK] automate cmake/run/debug flow with shell scripts
+2. [OK] add more debug infos
+3. [DROPPED] add prefill stage to class Transformer
+4. [WIP] delete int8 implementation
+5. [WIP] rewrite Tensor class with c++ template 
+
+
+
+# Original README by jonemeth
+
+https://github.com/jonemeth/llama3.cpp
+
 # llama3.cpp
+
 Llama3 inference in pure C++.
 
 This is a C++ port of [llama3.c](https://github.com/jameswdelancey/llama3.c) by [James Delancey](https://github.com/jameswdelancey), which is a modified version of [llama2.c](https://github.com/karpathy/llama2.c): by [Andrej Karpathy](https://github.com/karpathy).
@@ -57,3 +132,8 @@ For chat mode set the `-m chat` argument, and use an "Instruct" model:
 ```
 ./llama3 ./models/Llama3.1-8B-Instruct-q80.bin -m chat
 ```
+
+
+
+# END
+
