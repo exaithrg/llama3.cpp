@@ -43,6 +43,9 @@ Transformer build_transformer(std::string const &checkpoint_path)
     Config config;
     inputStream.read((char *)(&config), sizeof(Config));
 
+    // DeepSeek-R1-Distill-Llama-8B model has sequence-length 131072,
+    config.seqLength = std::min(2048, config.seqLength);
+
     inputStream.seekg(256);
 
     Transformer transformer(config);

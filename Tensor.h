@@ -15,6 +15,12 @@ template <typename T> struct LoggingAllocator : std::allocator<T>
         logger(Logger::DEBUG) << "Allocating " << n << " elements" << std::endl;
         return std::allocator<T>::allocate(n);
     }
+
+    void deallocate(T *p, std::size_t n)
+    {
+        logger(Logger::DEBUG) << "Deallocating " << n << " elements" << std::endl;
+        ::operator delete(p);
+    }
 };
 
 using FloatTensor = std::vector<float, LoggingAllocator<float>>;
