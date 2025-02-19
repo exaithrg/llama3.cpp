@@ -123,8 +123,8 @@ void generate(Transformer &transformer, Tokenizer const &tokenizer, Sampler &sam
         auto end = time_in_ms();
         auto elapsed = (end - *start).count();
         if (0 < elapsed){
-            logger(Logger::DEBUG) << "==DEBUG== --------------------------------------------------------" << std::endl;
-            logger(Logger::DEBUG) << "==DEBUG== achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
+            logger(Logger::INFO) << "==INFO== --------------------------------------------------------" << std::endl;
+            logger(Logger::INFO) << "==INFO== achieved tok/s: " << static_cast<double>(steps - 1) / elapsed * 1000 << std::endl;
         }
     }
 
